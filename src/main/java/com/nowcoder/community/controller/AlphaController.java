@@ -34,17 +34,18 @@ public class AlphaController {
 
     // 如何获得请求对象和响应对象： 1. 在服务端利用对象获取
     @RequestMapping("/http")
-    // 在参数中声明 HttpServletRequest 和 HttpServletResponse， 那么 DispatcherServlet 在调用该方法是会自动将这两个对象传进来
+    // 在参数中声明 HttpServletRequest 和 HttpServletResponse， 那么 DispatcherServlet
+    // 在调用该方法是会自动将这两个对象传进来
     public void http(HttpServletRequest request, HttpServletResponse response) {
         // 通过 response 对象向浏览器输出数据，因此不依赖此处返回值
         // 获取请求数据
         System.out.println(request.getMethod());
-        System.out.println(request.getServletPath());
+        System.out.println(request.getServletPath()); // 请求路径
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
             String name = headerNames.nextElement();
             String value = request.getHeader(name); // head 是 key-value 结构
-            System.out.println(name+": "+value);
+            System.out.println(name + ": " + value);
         }
         System.out.println(request.getParameter("code")); // 获取参数
 
@@ -72,8 +73,8 @@ public class AlphaController {
     public String getStudents(
             @RequestParam(name = "current", required = false, defaultValue = "1") int current,
             @RequestParam(name = "limit", required = false, defaultValue = "10") int limit) {
-//        System.out.println(current);
-//        System.out.println(limit);
+        // System.out.println(current);
+        // System.out.println(limit);
         return "Student Zhou Xinrui";
     }
 
@@ -87,7 +88,6 @@ public class AlphaController {
         return "a student";
     }
 
-
     // POST 请求
     @RequestMapping(path = "student", method = RequestMethod.POST)
     @ResponseBody
@@ -99,13 +99,12 @@ public class AlphaController {
     }
 
     // 响应 HTML 数据
-
     @RequestMapping(path = "teacher", method = RequestMethod.GET)
     public ModelAndView getTeacher() {
-         ModelAndView mav = new ModelAndView(); // 手动实例化后返回
-         // 传入数据
-        mav.addObject("name","周歆蕊");
-        mav.addObject("age","22");
+        ModelAndView mav = new ModelAndView(); // 手动实例化后返回
+        // 传入数据
+        mav.addObject("name", "周歆蕊");
+        mav.addObject("age", "22");
         // 传入模版
         mav.setViewName("/demo/view"); // 省略.html
         return mav;
@@ -114,21 +113,22 @@ public class AlphaController {
     @RequestMapping(path = "/school", method = RequestMethod.GET)
     // model 不是自己创建的， DispatcherServlet 调用函数是检测到参数，会自动实例化 Model 后传入. model 存储在容器中
     public String getSchool(Model model) {
-        model.addAttribute("name","香港科技大学");
-        model.addAttribute("age","30");
+        model.addAttribute("name", "香港科技大学");
+        model.addAttribute("age", "30");
         return "/demo/view"; // 返回 view 路径
     }
 
     // 响应 JSON 数据 （一般在异步请求中）
     // Java 对象 --> JSON 字符串--> JS 对象
     @RequestMapping(path = "/employee", method = RequestMethod.GET)
-    // DispatcherServlet 调用函数时，检测到 @ResponseBody 注解 且函数返回的是 Java 对象，会自动将返回的 Map 转化为 JSON 字符串
+    // DispatcherServlet 调用函数时，检测到 @ResponseBody 注解 且函数返回的是 Java 对象，会自动将返回的 Map 转化为
+    // JSON 字符串
     @ResponseBody
     public Map getEmp() {
-        Map<String, Object> map  = new HashMap<>();
-        map.put("name","Minyue");
-        map.put("age","23");
-        map.put("salary","35000");
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "Minyue");
+        map.put("age", "23");
+        map.put("salary", "35000");
         return map;
     }
 
@@ -137,16 +137,16 @@ public class AlphaController {
     @ResponseBody
     public List<Map<String, Object>> getEmps() {
         List<Map<String, Object>> list = new ArrayList<>();
-        Map<String, Object> emp1  = new HashMap<>();
-        emp1.put("name","Minyue");
-        emp1.put("age","23");
-        emp1.put("salary","35000");
+        Map<String, Object> emp1 = new HashMap<>();
+        emp1.put("name", "Minyue");
+        emp1.put("age", "23");
+        emp1.put("salary", "35000");
         list.add(emp1);
 
-        Map<String, Object> emp2  = new HashMap<>();
-        emp2.put("name","Xinrui");
-        emp2.put("age","22");
-        emp2.put("salary","30000");
+        Map<String, Object> emp2 = new HashMap<>();
+        emp2.put("name", "Xinrui");
+        emp2.put("age", "22");
+        emp2.put("salary", "30000");
         list.add(emp2);
         return list;
     }
